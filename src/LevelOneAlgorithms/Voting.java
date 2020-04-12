@@ -8,6 +8,6 @@ public class Voting implements LevelOneAlgo {
 //		x += new Levenshtein().run(foo, bar) ? 1 : 0;
 //		x += new Soundex().run(foo, bar) ? 1 : 0;
 //		x += new SequenceMatcher().run(foo, bar) ? 1 : 0;
-		return FuzzySearch.tokenSortPartialRatio(foo, bar) > 55;
+		return FuzzySearch.tokenSortPartialRatio(foo, bar) > 40;
 	}
 }

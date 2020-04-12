@@ -13,4 +13,11 @@ public class PrintRecords {
 		}
 		System.out.println("=======================================\n\n");
 	}
+	
+	public static void printRecords(ArrayList<Record> groupOfRecords){
+		System.out.println("--------------------------------------");
+		for(Record entry : groupOfRecords)
+	        System.out.println(entry.fetch("fname") + ", " + entry.fetch("lname") + ", " + entry.fetch("address"));
+	    System.out.println("--------------------------------------");
+	}
 }
