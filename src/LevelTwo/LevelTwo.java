@@ -5,72 +5,59 @@ import me.xdrop.fuzzywuzzy.FuzzySearch;
 
 import java.util.*;
 
-import LevelTwoAlgorithms.Backpropagation;
+import LevelTwoAlgorithms.GradientDescent;
 
 public class LevelTwo {
 	
-	Backpropagation backpropagationAlgo = new Backpropagation();
+	GradientDescent gradientDescentAlgo = new GradientDescent();
 	
 	public LevelTwo(ArrayList<ArrayList<Record>> groupedRecords) {
-		//PrintRecords.print(groupedRecords);
-		randomGroupsRecords(groupedRecords);
-		System.out.println(backpropagationAlgo.weights);
+		PrintRecords.print(groupedRecords);
+		randomGroups(groupedRecords, 4);
+		System.out.println(gradientDescentAlgo.weights);
 	}
-	ArrayList<ArrayList<Record>> randomGroupedRecords;
-	ArrayList<ArrayList<Record>> recordListToTrain;
 	Random random = new Random();
 	
-	public void randomGroupsRecords(ArrayList<ArrayList<Record>> groupedRecords){
-		randomGroupedRecords = new ArrayList<ArrayList<Record>>();
+	public void randomGroups(ArrayList<ArrayList<Record>> groupedRecords, int sample){
+		ArrayList<ArrayList<Record>> randomGroups = new ArrayList<ArrayList<Record>>();
 		
-		ArrayList<Integer> randomList = new ArrayList<Integer>();
-		for(int i=1;i<=4;i++){
+		Set<Integer> randomIndices = new HashSet<Integer>();
+		while (randomIndices.size() < sample) {
 			int randomIndex = random.nextInt(groupedRecords.size());
-			if(randomList.contains(randomIndex) || groupedRecords.get(randomIndex).size()==1){
-				i--;
-			}
-			else{
-				randomList.add(randomIndex);
-			}
+			if(groupedRecords.get(randomIndex).size() > 1)
+				randomIndices.add(randomIndex);
 		}
 		
-		for(int i=0;i<randomList.size();i++){
-			randomGroupedRecords.add(groupedRecords.get(randomList.get(i)));
+		for(int x : randomIndices) {
+			randomGroups.add(groupedRecords.get(x));
 		}
 		
-		System.out.println("random Records group---- >");
-		//PrintRecords.print(randomGroupedRecords);
-		randomRecords(randomGroupedRecords);
+		randomRecords(randomGroups, sample);
 	}
 	
-	public void randomRecords(ArrayList<ArrayList<Record>> randomGroupedRecords){
-		recordListToTrain =new ArrayList<ArrayList<Record>>();
-		ArrayList<Integer> randomList ;
-		ArrayList<Record> finalRecords;
-		for(ArrayList<Record> group : randomGroupedRecords){
-			randomList = new ArrayList<>();
-			finalRecords =new ArrayList<Record>();
-			for(int i=0;i<2;i++){
-				int randomIndex =  random.nextInt(group.size());
-				if(randomList.contains(randomIndex)){
-					i--;
-				}
-				else{
-					finalRecords.add(group.get(randomIndex));
-				}
+	public void randomRecords(ArrayList<ArrayList<Record>> randomGroups, int sample){
+		
+		Set<Integer> randomIndices = new HashSet<Integer>();
+		
+		for(ArrayList<Record> group : randomGroups) {
+			while (randomIndices.size() < 2)
+				randomIndices.add(random.nextInt(group.size()));
+			for(int x = group.size() - 1; x > -1; --x) {
+				if(!randomIndices.contains(x))
+					group.remove(x);
 			}
-			recordListToTrain.add(finalRecords);
+			randomIndices.clear();
 		}
 		
-		PrintRecords.print(recordListToTrain);
-		trainingTheData(recordListToTrain);
+		PrintRecords.print(randomGroups);
+		trainingTheData(randomGroups, sample);
 	}
 	
 	float matchPercent(String foo, String bar) {
 		return (float)FuzzySearch.tokenSetPartialRatio(foo, bar)/100.0f;
 	}
 	
-	public void trainingTheData(ArrayList<ArrayList<Record>> recordsToTrain){
+	public void trainingTheData(ArrayList<ArrayList<Record>> recordsToTrain, int sample){
 		ArrayList<Integer> manualCheckList = new ArrayList<Integer>();
 		
 		Scanner s = new Scanner(System.in);
@@ -91,10 +78,10 @@ public class LevelTwo {
 				      if(match.equalsIgnoreCase("n") || match.equalsIgnoreCase("no")){
 				        valid = false;
 				        manualCheckList.add(-1);
-				        backpropagationAlgo.updateWeights(a, b, c, 1.0f);
+				        gradientDescentAlgo.updateWeights(a, b, c, 1.0f, sample);
 				      }else if (match.equalsIgnoreCase("y") || match.equalsIgnoreCase("yes")){
 				        manualCheckList.add(1);
-				        backpropagationAlgo.updateWeights(a, b, c, -1.0f);
+				        gradientDescentAlgo.updateWeights(a, b, c, -1.0f, sample);
 				      //-------------------  Add or update weights here for YES				----------------------------------//        
 				        valid = false;
 				      }else{
