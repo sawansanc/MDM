@@ -3,6 +3,7 @@ package erApp;
 import java.util.ArrayList;
 import java.util.Collections;
 import LevelOneAlgorithms.*;
+import LevelThreeAlgo.Kmeans;
 import LevelTwo.LevelTwo;
 import Utility.*;
 
@@ -26,7 +27,10 @@ public class LevelOne {
 		
 		groupedRecords = driver(groupedRecords, new Voting());
 		
-		new LevelTwo(groupedRecords);
+		Weights weights = new LevelTwo(groupedRecords).getWeights();
+		
+		groupedRecords = driver(groupedRecords, new Kmeans(weights));
+		PrintRecords.print(groupedRecords);
 //		PrintRecords.print(groupedRecords);
 		
 //		do {
@@ -46,13 +50,11 @@ public class LevelOne {
 	
 	
 	//this method writes all the indexes of matching entries with the first entry of records into a set
-	static void matchingRecords(ArrayList<Record> records, Set<Integer> set, int curr, int next, LevelOneAlgo algo) {
+	static void matchingRecords(ArrayList<Record> records, Set<Integer> set, int curr, int next, Algorithm algo) {
 		if(next < records.size() && curr < records.size()) {
 			set.add(curr);
 			if(!set.contains(next))
-				if(algo.run(records.get(curr).fetch("fname"), records.get(next).fetch("fname")) && 
-						algo.run(records.get(curr).fetch("lname"), records.get(next).fetch("lname")) && 
-						algo.run(records.get(curr).fetch("address"), records.get(next).fetch("address"))) {
+				if(algo.run(records.get(curr), records.get(next))) {
 					set.add(next);
 					matchingRecords(records, set, next, 0, algo);
 				}
@@ -61,7 +63,7 @@ public class LevelOne {
 	}
 	
 //	returns new value for groupedRecords after applying algorithm by using matchingRecords
-	static ArrayList<ArrayList<Record>> driver(ArrayList<ArrayList<Record>> groupedRecords, LevelOneAlgo algo) {
+	static ArrayList<ArrayList<Record>> driver(ArrayList<ArrayList<Record>> groupedRecords, Algorithm algo) {
 		Set<Integer> set = new HashSet<Integer>();
 		ArrayList<ArrayList<Record>> out = new ArrayList<ArrayList<Record>>();
 		for(ArrayList<Record> records : groupedRecords)	{

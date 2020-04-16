@@ -10,13 +10,17 @@ import LevelTwoAlgorithms.GradientDescent;
 public class LevelTwo {
 	
 	GradientDescent gradientDescentAlgo = new GradientDescent();
+	Random random = new Random();
 	
 	public LevelTwo(ArrayList<ArrayList<Record>> groupedRecords) {
 		PrintRecords.print(groupedRecords);
 		randomGroups(groupedRecords, 4);
 		System.out.println(gradientDescentAlgo.weights);
 	}
-	Random random = new Random();
+	
+	public Weights getWeights() {
+		return gradientDescentAlgo.weights;
+	}
 	
 	public void randomGroups(ArrayList<ArrayList<Record>> groupedRecords, int sample){
 		ArrayList<ArrayList<Record>> randomGroups = new ArrayList<ArrayList<Record>>();

@@ -1,6 +1,9 @@
 package LevelOneAlgorithms;
 
-public class Levenshtein implements LevelOneAlgo {
+import Utility.Algorithm;
+import Utility.Record;
+
+public class Levenshtein implements Algorithm {
 	
 	double admissible_distance = 2.0;
 	
@@ -76,8 +79,8 @@ public class Levenshtein implements LevelOneAlgo {
         return v0[s2.length()];
     }
     
-    public boolean run(String foo, String bar) {
-    	return distance(foo, bar) <= admissible_distance; 
+    public boolean run(Record foo, Record bar) {
+    	return (distance(foo.fetch("fname"), bar.fetch("fname")) <= admissible_distance) && (distance(foo.fetch("lname"), bar.fetch("lname")) <= admissible_distance) && (distance(foo.fetch("address"), bar.fetch("address")) <= admissible_distance); 
     }
     
 }

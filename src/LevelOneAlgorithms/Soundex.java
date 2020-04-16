@@ -1,6 +1,9 @@
 package LevelOneAlgorithms;
 
-public class Soundex implements LevelOneAlgo{
+import Utility.Algorithm;
+import Utility.Record;
+
+public class Soundex implements Algorithm {
 	
 	String getCode(String s) 
     {
@@ -64,7 +67,7 @@ public class Soundex implements LevelOneAlgo{
         return output.substring(0, 4);
     }
 	
-	public boolean run(String s1, String s2) {
-		return getCode(s1).equals(getCode(s2));
+	public boolean run(Record foo, Record bar) {
+		return getCode(foo.fetch("fname")).equals(getCode(bar.fetch("fname"))) && getCode(foo.fetch("lname")).equals(getCode(bar.fetch("lname"))) && getCode(foo.fetch("address")).equals(getCode(bar.fetch("address")));
 	}
 }
