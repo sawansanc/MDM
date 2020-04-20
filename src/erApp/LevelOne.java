@@ -18,7 +18,8 @@ public class LevelOne {
 		ArrayList<ArrayList<Record>> groupedRecords = new ArrayList<ArrayList<Record>>();
 		ArrayList<Record> in = new ArrayList<Record>();
 		//reads CSV into groupedRecords
-		new FileIO("D:\\maruti\\dataset.csv", in);
+		FileIO f = new FileIO("D:\\maruti\\dataset2.csv", in);
+//		int x = in.size();
 		groupedRecords.add(in);
 		PrintRecords.print(groupedRecords);
 		
@@ -30,7 +31,8 @@ public class LevelOne {
 		Weights weights = new LevelTwo(groupedRecords).getWeights();
 		
 		groupedRecords = driver(groupedRecords, new Kmeans(weights));
-		PrintRecords.print(groupedRecords);
+		
+		f.writeTo(groupedRecords, "D:\\maruti\\dataset2_out.csv");
 //		PrintRecords.print(groupedRecords);
 		
 //		do {

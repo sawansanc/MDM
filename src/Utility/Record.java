@@ -17,4 +17,8 @@ public class Record {
 		default : return null;
 		}
 	}
+	
+	public String getRecord() {
+		return fname + "," + lname + "," + address + "\n";
+	}
 }
